@@ -12,6 +12,13 @@ public class Aircraft {
 	private STATUS GEAR_NOT_DOWN, AIR_SPEED;
 	private boolean airbrake, lower_gear, override;
 	
+	/**
+	 * Constructor for the class, intializes the object
+	 * with the starting values as per the requirements.
+	 * @param interval		This variable is used to set
+	 * the interval at which the speed is manually
+	 * adjusted.
+	 */
 	public Aircraft(int interval){
 		time = 250;
 		speed = 350;
@@ -28,6 +35,10 @@ public class Aircraft {
 		lower_gear = !lower_gear;
 	}
 	
+	/**
+	 * This function calculates the status of alarms and other outputs based on the
+	 * current values.
+	 */
 	void calculate_state(){
 		//First check gear not down alarm
 		if((GEAR_NOT_DOWN == STATUS.NONE) && (time <= 120 || altitude < 1000) && !lower_gear)
@@ -52,6 +63,10 @@ public class Aircraft {
 			airbrake = false;
 	}
 	
+	/**
+	 * This advances the state of the aircraft by one second and increments
+	 * the values as per the requirements
+	 */
 	public void tick(){
 		speed -= 5;
 		if(airbrake)
@@ -61,21 +76,45 @@ public class Aircraft {
 		calculate_state();
 	}
 	
+	/**
+	 * If the Gear Not Down alarm is active this silences it by
+	 * switching it to warning state.
+	 * @see STATUS
+	 * @see GEAR_NOT_DOWN
+	 */
 	public void silence_GND_Alarm(){
 		if(GEAR_NOT_DOWN == STATUS.ALARM)
 			GEAR_NOT_DOWN = STATUS.WARNING;
 	}
 	
+	/**
+	 * If the Air Speed alarm is active this silences it by switching
+	 * it to warning state.
+	 * @see STATUS
+	 * @see AIR_SPEED
+	 */
 	public void silence_AS_Alarm(){
 		if(AIR_SPEED == STATUS.ALARM)
 			AIR_SPEED = STATUS.WARNING;
 	}
 	
+	/**
+	 * This function increases the speed by speed_interval and returns the result
+	 * @return	The speed after incrementing
+	 * @see		speed
+	 * @see		speed_interval
+	 */
 	public int increase_speed(){
 		speed += speed_interval;
 		return speed;
 	}
 	
+	/**
+	 * This function decreases the speed by speed_interval and returns the result
+	 * @return	The speed after incrementing
+	 * @see		speed
+	 * @see		speed_interval
+	 */
 	public int decrease_speed(){
 		speed -= speed_interval;
 		return speed;
