@@ -7,6 +7,7 @@ import java.awt.KeyboardFocusManager;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -35,6 +36,14 @@ public class Display extends JFrame {
 		
 	}
 	
+	/**
+	 * Private inner class to handle throttle inputs from pilot
+	 * WARNING: If there is a "Repeat keystroke" feature on your
+	 * computer be sure to disable it, otherwise this will not work
+	 * as intended.
+	 * @author Matthew Waller
+	 *
+	 */
 	private class ThrottleController implements KeyEventDispatcher{
 
 		@Override
@@ -44,38 +53,32 @@ public class Display extends JFrame {
 			case KeyEvent.KEY_PRESSED:
 				examineKeyCode(true, vkc);
 				return true;
-//			case KeyEvent.KEY_TYPED:
-//				if(inc_b_down || dec_b_down)
-//					return true;
-//				switch(e.getKeyChar()){
-//				case '+':
-//				case '=':
-//					p_Speed.setText(Integer.toString(aircraft.increase_speed()));
-//					break;
-//				case '-':
-//				case '_':
-//					p_Speed.setText(Integer.toString(aircraft.decrease_speed()));
-//				}
-//				return true;
+			case KeyEvent.KEY_TYPED:
+				switch(e.getKeyChar()){
+				case '+':
+				case '=':
+					p_Speed.setText(Integer.toString(aircraft.increase_speed()));
+					break;
+				case '-':
+				case '_':
+					p_Speed.setText(Integer.toString(aircraft.decrease_speed()));
+				}
+				return true;
 			case KeyEvent.KEY_RELEASED:
 				examineKeyCode(false, vkc);
 				return true;
 			}
-			return true;
+			return false;
 		}
 		
 		private void examineKeyCode(boolean state, int keyCode){
 			switch(keyCode){
 			case KeyEvent.VK_PLUS:
 			case KeyEvent.VK_EQUALS:
-				if(!state)
-					p_Speed.setText(Integer.toString(aircraft.increase_speed()));
 				inc_b_down = state;
 				return;
 			case KeyEvent.VK_UNDERSCORE:
 			case KeyEvent.VK_MINUS:
-				if(!state)
-					p_Speed.setText(Integer.toString(aircraft.decrease_speed()));
 				dec_b_down = state;
 			}
 		}
