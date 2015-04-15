@@ -31,8 +31,9 @@ public class Aircraft {
 		speed_interval = interval;
 	}
 	
-	public void toggle_gear(){
+	public boolean toggle_gear(){
 		lower_gear = !lower_gear;
+		return lower_gear;
 	}
 	
 	/**
@@ -68,11 +69,14 @@ public class Aircraft {
 	 * the values as per the requirements
 	 */
 	public void tick(){
-		speed -= 5;
+		if(speed > 0)
+			speed -= 5;
 		if(airbrake)
 			speed -= 15;
-		altitude -= 20;
-		time--;
+		if(altitude > 0)
+			altitude -= 20;
+		if(time > 0)
+			time--;
 		calculate_state();
 	}
 	
