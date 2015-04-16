@@ -7,19 +7,15 @@ import java.awt.KeyboardFocusManager;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
-
-import org.omg.PortableServer.ImplicitActivationPolicyValue;
 
 import control.Aircraft;
 import control.Aircraft.STATUS;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,7 +40,7 @@ public class Display extends JFrame {
 	 * @author Matthew Waller
 	 *
 	 */
-	private class ThrottleController implements KeyEventDispatcher{
+	private class AircraftController implements KeyEventDispatcher{
 
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
@@ -52,17 +48,6 @@ public class Display extends JFrame {
 			switch(e.getID()){
 			case KeyEvent.KEY_PRESSED:
 				examineKeyCode(true, vkc);
-				return true;
-			case KeyEvent.KEY_TYPED:
-				switch(e.getKeyChar()){
-				case '+':
-				case '=':
-					p_Speed.setText(Integer.toString(aircraft.increase_speed()));
-					break;
-				case '-':
-				case '_':
-					p_Speed.setText(Integer.toString(aircraft.decrease_speed()));
-				}
 				return true;
 			case KeyEvent.KEY_RELEASED:
 				examineKeyCode(false, vkc);
@@ -80,6 +65,12 @@ public class Display extends JFrame {
 			case KeyEvent.VK_UNDERSCORE:
 			case KeyEvent.VK_MINUS:
 				dec_b_down = state;
+				return;
+			case KeyEvent.VK_UP:
+				up_pressed = state;
+				return;
+			case KeyEvent.VK_DOWN:
+				down_pressed = state;
 			}
 		}
 		
@@ -103,6 +94,8 @@ public class Display extends JFrame {
 	private Timer tick_timer;
 	private volatile boolean dec_b_down = false;
 	private volatile boolean inc_b_down = false;
+	private volatile boolean up_pressed = false;
+	private volatile boolean down_pressed = false;
 
 	/**
 	 * Launch the application.
@@ -128,7 +121,7 @@ public class Display extends JFrame {
 		setBounds(100, 100, 805, 473);
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-		manager.addKeyEventDispatcher(new ThrottleController());
+		manager.addKeyEventDispatcher(new AircraftController());
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -286,7 +279,7 @@ public class Display extends JFrame {
 		contentPane.add(c_Warning);
 		c_Warning.setColumns(10);
 		
-		aircraft = new Aircraft(10);
+		aircraft = new Aircraft(10,20);
 		ticker = new Ticker();
 		tick_timer = new Timer(true);
 		tick_timer.scheduleAtFixedRate(ticker, 0, 1000);
@@ -304,17 +297,21 @@ public class Display extends JFrame {
 	}
 	
 	public void updateInfo(){
-		String info = Integer.toString(aircraft.get_altitude());
+		String info;
+		if(up_pressed && !down_pressed)
+			info = Integer.toString(aircraft.increase_altitude());
+		else if(down_pressed && !up_pressed)
+			info = Integer.toString(aircraft.decrease_altitude());
+		else
+			info = Integer.toString(aircraft.get_altitude());
 		p_Altitude.setText(info);
 		c_Altitude.setText(info);
 		info = Integer.toString(aircraft.get_time());
 		p_Ttl.setText(info);
 		c_Ttl.setText(info);
 		if(inc_b_down && !dec_b_down){
-			aircraft.increase_speed();
 			info = Integer.toString(aircraft.increase_speed());
 		}else if(dec_b_down && !inc_b_down){
-			aircraft.decrease_speed();
 			info = Integer.toString(aircraft.decrease_speed());
 		}else
 			info = Integer.toString(aircraft.get_speed());
@@ -338,6 +335,8 @@ public class Display extends JFrame {
 		info = "";
 		info += (g_status == STATUS.WARNING) ? "GEAR NOT DOWN" : "";
 		info += (a_status == STATUS.WARNING) ? "AIR SPEED" : "";
+		info += (aircraft.is_airbrake()) ? "AIRBRAKE" : "";
+		info += (aircraft.is_override()) ? "OVERRIDE" : "";
 		p_Warning.setText(info);
 		c_Warning.setText(info);
 		//ticker.update(); //Blocks until next tick

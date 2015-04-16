@@ -2,8 +2,6 @@ package control;
 
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,7 +34,7 @@ public class AircraftTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
-		subject = new Aircraft(0);
+		subject = new Aircraft(0,0);
 		checksum = new OutputScenario(2);
 	}
 	
@@ -242,5 +240,10 @@ public class AircraftTest {
 	@Test
 	public void bv_test_37(){
 		run_test(2,249,120,true);
+	}
+	
+	@Test
+	public void dc_test_1(){
+		run_test(2,249,59,true);
 	}
 }
