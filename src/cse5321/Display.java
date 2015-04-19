@@ -3,22 +3,22 @@ package cse5321;
 import java.awt.EventQueue;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import control.Aircraft;
 import control.Aircraft.STATUS;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @SuppressWarnings("serial")
 public class Display extends JFrame {
@@ -279,10 +279,12 @@ public class Display extends JFrame {
 		contentPane.add(c_Warning);
 		c_Warning.setColumns(10);
 		
-		aircraft = new Aircraft(10,20);
 		ticker = new Ticker();
 		tick_timer = new Timer(true);
 		tick_timer.scheduleAtFixedRate(ticker, 0, 1000);
+		
+		aircraft = new Aircraft(10,20);
+		paintDisplay();
 	}
 	
 	private void toggle_gear(){
@@ -295,8 +297,7 @@ public class Display extends JFrame {
 			c_GearPosition.setText("UP");
 		}
 	}
-	
-	public void updateInfo(){
+	private void paintDisplay(){
 		String info;
 		if(up_pressed && !down_pressed)
 			info = Integer.toString(aircraft.increase_altitude());
@@ -339,7 +340,10 @@ public class Display extends JFrame {
 		info += (aircraft.is_override()) ? "OVERRIDE" : "";
 		p_Warning.setText(info);
 		c_Warning.setText(info);
-		//ticker.update(); //Blocks until next tick
+	}
+	
+	public void updateInfo(){
 		aircraft.tick();
+		paintDisplay();
 	}
 }

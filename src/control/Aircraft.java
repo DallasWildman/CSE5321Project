@@ -37,6 +37,10 @@ public class Aircraft {
 		return lower_gear;
 	}
 	
+	public static void calculate_state(Aircraft subject){
+		subject.calculate_state();
+	}
+	
 	/**
 	 * This function calculates the status of alarms and other outputs based on the
 	 * current values.
