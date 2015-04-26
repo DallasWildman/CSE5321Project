@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import control.Aircraft;
+import control.Aircraft.CONTROL;
 import control.Aircraft.STATUS;
 
 
@@ -281,9 +282,9 @@ public class Display extends JFrame {
 		
 		ticker = new Ticker();
 		tick_timer = new Timer(true);
-		tick_timer.scheduleAtFixedRate(ticker, 0, 1000);
+		tick_timer.scheduleAtFixedRate(ticker, 2000, 1000);
 		
-		aircraft = new Aircraft(10,20);
+		aircraft = new Aircraft();
 		paintDisplay();
 	}
 	
@@ -300,22 +301,24 @@ public class Display extends JFrame {
 	private void paintDisplay(){
 		String info;
 		if(up_pressed && !down_pressed)
-			info = Integer.toString(aircraft.increase_altitude());
+			aircraft.set_elevon(CONTROL.UP);
 		else if(down_pressed && !up_pressed)
-			info = Integer.toString(aircraft.decrease_altitude());
+			aircraft.set_elevon(CONTROL.DOWN);
 		else
-			info = Integer.toString(aircraft.get_altitude());
+			aircraft.set_elevon(CONTROL.NONE);
+		info = Integer.toString(aircraft.get_altitude());
 		p_Altitude.setText(info);
 		c_Altitude.setText(info);
 		info = Integer.toString(aircraft.get_time());
 		p_Ttl.setText(info);
 		c_Ttl.setText(info);
-		if(inc_b_down && !dec_b_down){
-			info = Integer.toString(aircraft.increase_speed());
-		}else if(dec_b_down && !inc_b_down){
-			info = Integer.toString(aircraft.decrease_speed());
-		}else
-			info = Integer.toString(aircraft.get_speed());
+		if(inc_b_down && !dec_b_down)
+			aircraft.set_throttle(CONTROL.UP);
+		else if(dec_b_down && !inc_b_down)
+			aircraft.set_throttle(CONTROL.DOWN);
+		else
+			aircraft.set_throttle(CONTROL.NONE);
+		info = Integer.toString(aircraft.get_speed());
 		p_Speed.setText(info);
 		c_Speed.setText(info);
 		boolean b_info = aircraft.is_gear_down();

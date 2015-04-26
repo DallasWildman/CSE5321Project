@@ -8,8 +8,14 @@ public class Aircraft {
 		WARNING,
 		NONE;
 	}
-	private int time, speed, speed_interval, altitude, alt_interval;
+	public enum CONTROL{
+		UP,
+		NONE,
+		DOWN;
+	}
+	private int time, speed, altitude;
 	private STATUS GEAR_NOT_DOWN, AIR_SPEED;
+	private CONTROL THROTTLE, ELEVON;
 	private boolean airbrake, lower_gear, override;
 	
 	/**
@@ -19,7 +25,7 @@ public class Aircraft {
 	 * the interval at which the speed is manually
 	 * adjusted.
 	 */
-	public Aircraft(int s_interval, int a_interval){
+	public Aircraft(){
 		time = 250;
 		speed = 350;
 		altitude = 2000;
@@ -28,8 +34,8 @@ public class Aircraft {
 		airbrake = false;
 		lower_gear = false;
 		override = false;
-		speed_interval = s_interval;
-		alt_interval = a_interval;
+		THROTTLE = CONTROL.NONE;
+		ELEVON = CONTROL.NONE;
 	}
 	
 	public boolean toggle_gear(){
@@ -74,7 +80,15 @@ public class Aircraft {
 	 * This advances the state of the aircraft by one second and increments
 	 * the values as per the requirements
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public void tick(){
+		switch(THROTTLE){
+		case UP:
+			speed += (airbrake) ? 0 : 10;
+			break;
+		case DOWN:
+			speed -= 10;
+		}
 		if(airbrake)
 			speed -= 10;
 		if(speed > 0)
@@ -83,6 +97,13 @@ public class Aircraft {
 			speed = 0;
 		if(speed < 0)
 			speed = 0;
+		switch(ELEVON){
+		case UP:
+			altitude += 20;
+			break;
+		case DOWN:
+			altitude -= 20;
+		}
 		if(altitude > 0)
 			altitude -= 20;
 		else
@@ -114,49 +135,12 @@ public class Aircraft {
 			AIR_SPEED = STATUS.WARNING;
 	}
 	
-	/**
-	 * This function increases the speed by speed_interval if airbrakes aren't
-	 * applied and returns the result
-	 * @return	The speed after incrementing
-	 * @see		speed
-	 * @see		speed_interval
-	 */
-	public int increase_speed(){
-		speed += (!airbrake) ? speed_interval : 0;
-		return speed;
+	public void set_throttle(CONTROL state){
+		THROTTLE = state;
 	}
 	
-	/**
-	 * This function decreases the speed by speed_interval and returns the result
-	 * @return	The speed after incrementing
-	 * @see		speed
-	 * @see		speed_interval
-	 */
-	public int decrease_speed(){
-		speed -= speed_interval;
-		return speed;
-	}
-	
-	/**
-	 * This function increases the altitude by alt_interval
-	 * @return	The altitude after incrementing
-	 * @see		altitude
-	 * @see		alt_interval
-	 */
-	public int increase_altitude(){
-		altitude += alt_interval;
-		return altitude;
-	}
-	
-	/**
-	 * This function decreases the altitude by alt_interval
-	 * @return	The altitude after incrementing
-	 * @see		altitude
-	 * @see		alt_interval
-	 */
-	public int decrease_altitude(){
-		altitude -= alt_interval;
-		return altitude;
+	public void set_elevon(CONTROL state){
+		ELEVON = state;
 	}
 	
 	void set_time(int t){

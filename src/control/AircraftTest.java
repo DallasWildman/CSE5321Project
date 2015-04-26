@@ -34,7 +34,7 @@ public class AircraftTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
-		subject = new Aircraft(0,0);
+		subject = new Aircraft();
 		checksum = new OutputScenario(2);
 	}
 	
