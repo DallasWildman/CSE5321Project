@@ -60,7 +60,7 @@ public class Aircraft {
 		}else
 			GEAR_NOT_DOWN = STATUS.NONE;
 		//Check air speed alarm
-		if(lower_gear && speed >300){
+		if(lower_gear && speed > 300){
 			if(AIR_SPEED == STATUS.NONE)
 				AIR_SPEED = STATUS.ALARM;
 			if(speed > 400){

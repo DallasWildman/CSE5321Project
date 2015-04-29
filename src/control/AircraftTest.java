@@ -28,8 +28,24 @@ public class AircraftTest {
 	}
 
 	
-	private static Aircraft subject;
+	protected static Aircraft subject;
 	private static OutputScenario checksum;
+	
+	protected STATUS get_gear(){
+		return checksum.gear;
+	}
+	
+	protected STATUS get_airspeed(){
+		return checksum.airspeed;
+	}
+	
+	protected boolean get_airbrake(){
+		return checksum.airbrake;
+	}
+	
+	protected boolean get_override(){
+		return checksum.override;
+	}
 
 	
 	@BeforeClass
