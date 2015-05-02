@@ -46,6 +46,10 @@ public class AircraftTest {
 	protected boolean get_override(){
 		return checksum.override;
 	}
+	
+	protected void set_aircraft(Aircraft subj){
+		subject = subj;
+	}
 
 	
 	@BeforeClass

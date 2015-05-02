@@ -53,9 +53,9 @@ public class Aircraft {
 	 */
 	void calculate_state(){
 		//First check gear not down alarm
-		if(!lower_gear){
-			override = false;
-			if(GEAR_NOT_DOWN == STATUS.NONE && (altitude < 1000 || time <= 120))
+		override = false;
+		if(!lower_gear && (altitude < 1000 || time <= 120)){
+			if(GEAR_NOT_DOWN == STATUS.NONE)
 				GEAR_NOT_DOWN = STATUS.ALARM;
 		}else
 			GEAR_NOT_DOWN = STATUS.NONE;

@@ -298,7 +298,16 @@ public class Display extends JFrame {
 			c_GearPosition.setText("UP");
 		}
 	}
-	private void paintDisplay(){
+	
+	public Aircraft get_Aircraft(){
+		return aircraft;
+	}
+	
+	public void stop_Simulation(){
+		tick_timer.cancel();
+	}
+	
+	public void paintDisplay(){
 		String info;
 		if(up_pressed && !down_pressed)
 			aircraft.set_elevon(CONTROL.UP);
@@ -337,9 +346,9 @@ public class Display extends JFrame {
 		p_Alarm.setText(info);
 		c_Alarm.setText(info);
 		info = "";
-		info += (g_status == STATUS.WARNING) ? "GEAR NOT DOWN" : "";
-		info += (a_status == STATUS.WARNING) ? "AIR SPEED" : "";
-		info += (aircraft.is_airbrake()) ? "AIRBRAKE" : "";
+		info += (g_status == STATUS.WARNING) ? "GEAR NOT DOWN " : "";
+		info += (a_status == STATUS.WARNING) ? "AIR SPEED " : "";
+		info += (aircraft.is_airbrake()) ? "AIRBRAKE " : "";
 		info += (aircraft.is_override()) ? "OVERRIDE" : "";
 		p_Warning.setText(info);
 		c_Warning.setText(info);
