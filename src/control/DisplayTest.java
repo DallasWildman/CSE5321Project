@@ -120,13 +120,13 @@ public class DisplayTest extends Display implements ActionListener{
 			if(source == Scenario_1)
 				harness.bv_test_2();
 			else if(source == Scenario_2)
-				harness.bv_test_5();
-			else if(source == Scenario_3)
 				harness.bv_test_36();
+			else if(source == Scenario_3)
+				harness.bv_test_5();
 			else if(source == Scenario_4)
 				harness.bv_test_10();
 			else if(source == Scenario_5)
-				harness.bv_test_4();
+				harness.bv_test_20();
 			else if(source == Scenario_6)
 				harness.bv_test_22();
 			else if(source == Scenario_7)
