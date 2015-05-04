@@ -20,7 +20,11 @@ import control.Aircraft;
 import control.Aircraft.CONTROL;
 import control.Aircraft.STATUS;
 
-
+/**
+ * Class Display AKA the "Display Controller Class"
+ * @author Matthew Waller
+ *
+ */
 @SuppressWarnings("serial")
 public class Display extends JFrame {
 	
@@ -288,6 +292,10 @@ public class Display extends JFrame {
 		paintDisplay();
 	}
 	
+	/**
+	 * Tells the aircraft object to raise or lower
+	 * gear
+	 */
 	private void toggle_gear(){
 		boolean status = aircraft.toggle_gear();
 		if(status){
@@ -307,6 +315,10 @@ public class Display extends JFrame {
 		tick_timer.cancel();
 	}
 	
+	/**
+	 * Updates the display's fields based on the data from
+	 * the aircraft object
+	 */
 	public void paintDisplay(){
 		String info;
 		if(up_pressed && !down_pressed)
@@ -354,6 +366,10 @@ public class Display extends JFrame {
 		c_Warning.setText(info);
 	}
 	
+	/**
+	 * Moves the simulation state forward and updates the display
+	 * @see Aircraft.tick
+	 */
 	public void updateInfo(){
 		aircraft.tick();
 		paintDisplay();

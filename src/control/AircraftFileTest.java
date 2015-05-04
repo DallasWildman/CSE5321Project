@@ -5,6 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * This class is for the textfile-based test harness and uses the framework created in AircraftTest
+ * @author Matthew Waller
+ *
+ */
 public class AircraftFileTest extends AircraftTest {
 
 	/**
@@ -23,7 +28,7 @@ public class AircraftFileTest extends AircraftTest {
 	
 	public void run() throws IOException{
 		String line, tokens[];
-		int tests = 0;
+		int tests = 0, fails = 0;
 		BufferedReader csv_reader = new BufferedReader(new InputStreamReader(file));
 		while((line = csv_reader.readLine()) != null && line.length() > 0){
 			tokens = line.split(",");
@@ -36,10 +41,11 @@ public class AircraftFileTest extends AircraftTest {
 				if(tokens.length == 5)
 					System.out.printf("Altitude: %s", tokens[4]);
 				System.out.println();
+				fails++;
 			}
 			tests++;
 		}
-		System.out.printf("%d tests completed...\n",tests);
+		System.out.printf("%d tests completed\n%d failure(s) reported",tests, fails);
 	}
 	
 	public static void main(String[] args) throws Exception {

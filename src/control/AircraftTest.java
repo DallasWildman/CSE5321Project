@@ -9,6 +9,12 @@ import control.Aircraft.STATUS;
 
 public class AircraftTest {
 	
+	/**
+	 * This private inner class is used to check
+	 * the output from the Aircraft object
+	 * @author Matthew Waller
+	 *
+	 */
 	private static class OutputScenario{
 		STATUS gear;
 		STATUS airspeed;
@@ -17,6 +23,10 @@ public class AircraftTest {
 		public OutputScenario(int number){
 			setScenario(number);
 		}
+		/**
+		 * Sets the status of the outputs based on scenario number
+		 * @param number  The number for a specific scenario
+		 */
 		public void setScenario(int number){
 			if(number < 1 || number > 8)
 				return;
@@ -259,6 +269,7 @@ public class AircraftTest {
 	
 	@Test
 	public void bv_test_37(){
+		subject.set_altitude(1000);
 		run_test(2,249,120,true);
 	}
 	

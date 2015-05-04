@@ -1,13 +1,31 @@
 package control;
 
 
-
+/**
+ * This is the "Compute Simulation State Class"
+ * @author Matthew Waller
+ *
+ */
 public class Aircraft {
+	/**
+	 * This is used to enumerate the separate states for both of the alarms.
+	 * @author Matthew Waller
+	 * @see GEAR_NOT_DOWN
+	 * @see AIR_SPEED
+	 *
+	 */
 	public enum STATUS{
 		ALARM,
 		WARNING,
 		NONE;
 	}
+	/**
+	 * This is used to enumerate the separate states for both the throttle and elevon
+	 * @author Matthew Waller
+	 * @see THROTTLE
+	 * @see ELEVON
+	 *
+	 */
 	public enum CONTROL{
 		UP,
 		NONE,
@@ -19,7 +37,7 @@ public class Aircraft {
 	private boolean airbrake, lower_gear, override;
 	
 	/**
-	 * Constructor for the class, intializes the object
+	 * Constructor for the class, initializes the object
 	 * with the starting values as per the requirements.
 	 * @param s_interval		This variable is used to set
 	 * the interval at which the speed is manually
@@ -49,7 +67,7 @@ public class Aircraft {
 	
 	/**
 	 * This function calculates the status of alarms and other outputs based on the
-	 * current values.
+	 * current values.  AKA the "Compute Simulation State" method.
 	 */
 	void calculate_state(){
 		//First check gear not down alarm
